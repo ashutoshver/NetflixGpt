@@ -6,14 +6,20 @@ import { toast, ToastContainer } from "react-toastify";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../../utils/firebase.js";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../../utils/userSlice.js";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleButtonClick = (e) => {
     e.preventDefault();
@@ -31,6 +37,25 @@ const Login = () => {
       )
         .then((userCredential) => {
           const user = userCredential.user;
+          updateProfile(user, {
+            displayName: name.current.value,
+            photoURL: "https://avatars.githubusercontent.com/u/114249674?v=4",
+          })
+            .then(() => {
+              const { uid, email, displayName, photoURL } = user;
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                })
+              );
+              navigate("/browse");
+            })
+            .catch((error) => {
+              toast.error(error.message);
+            });
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -46,7 +71,7 @@ const Login = () => {
       )
         .then((userCredential) => {
           const user = userCredential.user;
-          console.log(user, "login");
+          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
