@@ -51,7 +51,6 @@ const Login = () => {
                   photoURL: photoURL,
                 })
               );
-              navigate("/browse");
             })
             .catch((error) => {
               toast.error(error.message);
@@ -71,7 +70,6 @@ const Login = () => {
       )
         .then((userCredential) => {
           const user = userCredential.user;
-          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -97,7 +95,7 @@ const Login = () => {
       </div>
       <form
         className="absolute text-white left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 
-        w-3/12 bg-black/70 px-6 py-10 rounded-lg shadow-lg"
+        w-[90%] max-w-md sm:max-w-lg md:max-w-[50%] lg:max-w-[30%] xl:max-w-[25%] bg-black/70 px-6 py-10 rounded-lg shadow-lg"
       >
         <h1 className="font-bold text-3xl">
           {isSignInForm ? "Sign In" : "Sign Up"}
