@@ -16,7 +16,7 @@ const UseMovieVideos = (movieId) => {
     console.log(videos);
     
     const filterTrailers = videos?.results.filter(
-      (video) => video.type === "Teaser"
+      (video) => video.type === "Trailer"
     );
     const trailer = filterTrailers.length
       ? filterTrailers[0]
