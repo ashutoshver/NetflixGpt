@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
 import { addUser, removeUser } from "../../utils/userSlice.js";
 import { useDispatch } from "react-redux";
+import { toggleGptSearchView } from "../../utils/gptSlice.js";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -26,15 +27,20 @@ const Header = () => {
             photoURL: photoURL,
           })
         );
-        navigate("/browse")
+        navigate("/browse");
       } else {
         dispatch(removeUser());
-        navigate("/")
+        navigate("/");
       }
     });
 
     return () => unSubscribe();
   }, []);
+
+  const handleGptSearchClick = () => {
+    
+    dispatch(toggleGptSearchView())
+  }
 
   const handleSignOut = () => {
     signOut(auth)
@@ -49,6 +55,12 @@ const Header = () => {
       <img className="w-44 " src={ImageUrl.NETFLIX_LOGO} alt="netflix-logo" />
       {user && (
         <div className="flex items-center gap-2">
+          <button
+            className="bg-purple-700 text-white cursor-pointer p-2 rounded-md"
+            onClick={handleGptSearchClick}
+          >
+            GPT Search
+          </button>
           <img className="w-12 h-12 rounded-full" src={user.photoURL} />
           <button
             onClick={handleSignOut}
